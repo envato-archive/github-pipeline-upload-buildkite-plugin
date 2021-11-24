@@ -22,6 +22,23 @@ load '/usr/local/lib/bats/load.bash'
   unstub curl
 }
 
+@test "Uploads the a pipeline file (from repo with .git)" {
+  export BUILDKITE_REPO="git@github.com:myorg/myrepo"
+  export GITHUB_ACCESS_TOKEN="auth_token"
+  export BUILDKITE_BRANCH="my-branch"
+
+  stub curl "--silent --fail -H \"Authorization: token auth_token\" -H \"Accept: application/vnd.github.v3.raw\" -L https://api.github.com/repos/myorg/myrepo/contents/.buildkite/pipeline.yml?ref=my-branch : echo pipeline_contents"
+  stub buildkite-agent 'pipeline upload : echo "buildkite-agent pipeline upload $(cat -)"'
+
+  run "$PWD/hooks/command"
+
+  assert_success
+  assert_output --partial "buildkite-agent pipeline upload pipeline_contents"
+
+  unstub buildkite-agent
+  unstub curl
+}
+
 @test "Uploads a pipeline file param" {
   export BUILDKITE_PLUGIN_GITHUB_PIPELINE_UPLOAD_FILE="my-app/my-pipeline.yml"
   export BUILDKITE_REPO="git@github.com:myorg/myrepo.git"
