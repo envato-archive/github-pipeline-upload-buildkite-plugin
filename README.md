@@ -10,7 +10,7 @@ In the buildkite web ui, edit your steps and paste the following. It will upload
 steps:
   - label: ":pipeline:"
     plugins:
-      - envato/github-pipeline-upload#v0.0.1: ~
+      - envato/github-pipeline-upload#v0.0.2: ~
 ```
 
 To upload a custom pipeline file.
@@ -19,7 +19,7 @@ To upload a custom pipeline file.
 steps:
   - label: ":pipeline:"
     plugins:
-      - envato/github-pipeline-upload#v0.0.1:
+      - envato/github-pipeline-upload#v0.0.2:
           file: folder/my-pipeline.yml
 ```
 

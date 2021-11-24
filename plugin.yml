@@ -6,5 +6,6 @@ requirements:
 configuration:
   properties:
     file:
-      type: string
+      type: [string, array]
+      minimum: 1
   additionalProperties: false

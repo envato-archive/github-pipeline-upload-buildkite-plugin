@@ -57,6 +57,24 @@ load '/usr/local/lib/bats/load.bash'
   unstub curl
 }
 
+@test "Uploads an array of pipeline file params" {
+  export BUILDKITE_PLUGIN_GITHUB_PIPELINE_UPLOAD_FILE_0="my-app/my-pipeline.yml"
+  export BUILDKITE_REPO="git@github.com:myorg/myrepo.git"
+  export GITHUB_ACCESS_TOKEN="auth_token"
+  export BUILDKITE_BRANCH="my-branch"
+
+  stub curl "--silent --fail -H \"Authorization: token auth_token\" -H \"Accept: application/vnd.github.v3.raw\" -L https://api.github.com/repos/myorg/myrepo/contents/my-app/my-pipeline.yml?ref=my-branch : echo pipeline_contents"
+  stub buildkite-agent 'pipeline upload : echo "buildkite-agent pipeline upload $(cat -)"'
+
+  run "$PWD/hooks/command"
+
+  assert_success
+  assert_output --partial "buildkite-agent pipeline upload pipeline_contents"
+
+  unstub buildkite-agent
+  unstub curl
+}
+
 
 @test "Parsing git repo issue" {
   export BUILDKITE_REPO="bad_git_url"
