@@ -22,7 +22,7 @@ load '/usr/local/lib/bats/load.bash'
 }
 
 @test "Uploads a pipeline file param" {
-  export BUILDKITE_PLUGIN_FILE="my-app/my-pipeline.yml"
+  export BUILDKITE_PLUGIN_GITHUB_PIPELINE_UPLOAD_FILE="my-app/my-pipeline.yml"
   export BUILDKITE_REPO="git@github.com:myorg/myrepo.git"
   export GITHUB_ACCESS_TOKEN="auth_token"
   

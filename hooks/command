@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PIPELINE_FILE="${BUILDKITE_PLUGIN_FILE:-.buildkite/pipeline.yml}"
+PIPELINE_FILE="${BUILDKITE_PLUGIN_GITHUB_PIPELINE_UPLOAD_FILE:-.buildkite/pipeline.yml}"
 
 echo "~~~ :pipeline: Uploading $PIPELINE_FILE"
 
