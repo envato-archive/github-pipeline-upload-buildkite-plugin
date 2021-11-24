@@ -18,10 +18,12 @@ if [ -z "$GITHUB_ACCESS_TOKEN" ]; then
   exit 1
 fi
 
-PIPELINE_CONTENTS=$(curl --silent --fail -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" -H "Accept: application/vnd.github.v3.raw" -L "https://api.github.com/repos/${REPO_SLUG}/contents/${PIPELINE_FILE}?ref=${BUILDKITE_COMMIT}")
+echo "Using https://api.github.com/repos/${REPO_SLUG}/contents/${PIPELINE_FILE}?ref=${BUILDKITE_BRANCH}"
+
+PIPELINE_CONTENTS=$(curl --silent --fail -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" -H "Accept: application/vnd.github.v3.raw" -L "https://api.github.com/repos/${REPO_SLUG}/contents/${PIPELINE_FILE}?ref=${BUILDKITE_BRANCH}")
 
 if [ -z "$PIPELINE_CONTENTS" ]; then
-  echo "Github API Error with: https://api.github.com/repos/${REPO_SLUG}/contents/${PIPELINE_FILE}"
+  echo "Github API Error"
   exit 1
 fi
 
