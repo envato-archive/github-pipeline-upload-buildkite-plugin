@@ -1,0 +1,26 @@
+#!/bin/bash
+
+PIPELINE_FILE="${BUILDKITE_PLUGIN_FILE:-.buildkite/pipeline.yml}"
+
+if [[ $BUILDKITE_REPO =~ git@github.com:([[a-zA-Z0-9/_-]*)\.git$ ]]; then
+  REPO_SLUG=${BASH_REMATCH[1]}
+fi
+
+if [ -z "$REPO_SLUG" ]; then
+  echo "Failed to extract repository slug from BUILDKITE_REPO"
+  exit 1
+fi
+
+if [ -z "$GITHUB_ACCESS_TOKEN" ]; then
+  echo "Missing required GITHUB_ACCESS_TOKEN"
+  exit 1
+fi
+
+PIPELINE_CONTENTS=$(curl --silent --fail -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" -H "Accept: application/vnd.github.v3.raw" -L "https://api.github.com/repos/${REPO_SLUG}/contents/${PIPELINE_FILE}")
+
+if [ -z "$PIPELINE_CONTENTS" ]; then
+  echo "Github API Error with: https://api.github.com/repos/${REPO_SLUG}/contents/${PIPELINE_FILE}"
+  exit 1
+fi
+
+echo "$PIPELINE_CONTENTS" | buildkite-agent pipeline upload

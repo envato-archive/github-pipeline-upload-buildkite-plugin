@@ -1,0 +1,10 @@
+name: Github Pipeline Upload
+description: Fast pipeline upload without cloning the repo
+author: https://github.com/envato/github-pipeline-upload-buildkite-plugin
+requirements:
+  - curl
+configuration:
+  properties:
+    file:
+      type: string
+  additionalProperties: false
