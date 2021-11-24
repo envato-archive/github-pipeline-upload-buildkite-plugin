@@ -18,7 +18,7 @@ if [ -z "$GITHUB_ACCESS_TOKEN" ]; then
   exit 1
 fi
 
-PIPELINE_CONTENTS=$(curl --silent --fail -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" -H "Accept: application/vnd.github.v3.raw" -L "https://api.github.com/repos/${REPO_SLUG}/contents/${PIPELINE_FILE}")
+PIPELINE_CONTENTS=$(curl --silent --fail -H "Authorization: token ${GITHUB_ACCESS_TOKEN}" -H "Accept: application/vnd.github.v3.raw" -L "https://api.github.com/repos/${REPO_SLUG}/contents/${PIPELINE_FILE}?ref=${BUILDKITE_COMMIT}")
 
 if [ -z "$PIPELINE_CONTENTS" ]; then
   echo "Github API Error with: https://api.github.com/repos/${REPO_SLUG}/contents/${PIPELINE_FILE}"

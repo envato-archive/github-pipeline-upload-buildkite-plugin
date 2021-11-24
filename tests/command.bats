@@ -8,8 +8,9 @@ load '/usr/local/lib/bats/load.bash'
 @test "Uploads the a pipeline file" {
   export BUILDKITE_REPO="git@github.com:myorg/myrepo.git"
   export GITHUB_ACCESS_TOKEN="auth_token"
+  export BUILDKITE_COMMIT="my-comment"
   
-  stub curl "--silent --fail -H \"Authorization: token auth_token\" -H \"Accept: application/vnd.github.v3.raw\" -L https://api.github.com/repos/myorg/myrepo/contents/.buildkite/pipeline.yml : echo pipeline_contents"
+  stub curl "--silent --fail -H \"Authorization: token auth_token\" -H \"Accept: application/vnd.github.v3.raw\" -L https://api.github.com/repos/myorg/myrepo/contents/.buildkite/pipeline.yml?ref=my-comment : echo pipeline_contents"
   stub buildkite-agent 'pipeline upload : echo "buildkite-agent pipeline upload $(cat -)"'
 
   run "$PWD/hooks/command"
@@ -25,8 +26,9 @@ load '/usr/local/lib/bats/load.bash'
   export BUILDKITE_PLUGIN_GITHUB_PIPELINE_UPLOAD_FILE="my-app/my-pipeline.yml"
   export BUILDKITE_REPO="git@github.com:myorg/myrepo.git"
   export GITHUB_ACCESS_TOKEN="auth_token"
-  
-  stub curl "--silent --fail -H \"Authorization: token auth_token\" -H \"Accept: application/vnd.github.v3.raw\" -L https://api.github.com/repos/myorg/myrepo/contents/my-app/my-pipeline.yml : echo pipeline_contents"
+  export BUILDKITE_COMMIT="my-comment"
+
+  stub curl "--silent --fail -H \"Authorization: token auth_token\" -H \"Accept: application/vnd.github.v3.raw\" -L https://api.github.com/repos/myorg/myrepo/contents/my-app/my-pipeline.yml?ref=my-comment : echo pipeline_contents"
   stub buildkite-agent 'pipeline upload : echo "buildkite-agent pipeline upload $(cat -)"'
 
   run "$PWD/hooks/command"
