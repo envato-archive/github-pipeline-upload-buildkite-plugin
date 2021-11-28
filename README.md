@@ -1,6 +1,10 @@
-# Github Pipeline Upload
+# Experimental Github Pipeline Upload
 
 Fast pipeline upload without cloning your git repo. Ideal for generic pipeline steps configuration in the Web UI.
+
+## Known Issues
+
+When you upload a pipeline without checking out, the `BUILDKITE_COMMIT` and/or `git rev-parse HEAD` result will be inaccurate. This can lead to issues where variable interpolation is used.
 
 ## Example
 
